@@ -1,0 +1,1180 @@
+
+Part 1: Discussion Questions
+a> Explain the differences between var, let, and const in JavaScript regarding variable scope, hoisting, and reassignment.
+
+All three keywords declare variables, but they differ in scope, hoisting, and reassignment.
+Feature	var	let	const
+Scope	Function-scoped	Block-scoped	Block-scoped
+Hoisted	Yes, initialized as undefined	Yes, but in TDZ	Yes, but in TDZ
+Can be reassigned	Yes	Yes	No
+Can be redeclared in same scope	Yes	No	No
+
+
+For example:
+if (true) {
+    var x = 10;
+    let y = 20;
+    const z = 30;
+}
+
+console.log(x); // 10
+console.log(y); // ReferenceError
+console.log(z); // ReferenceError
+
+var is function-scoped, so the if block doesn't contain it. let and const are block-scoped, so they only exist within the { }.
+Regarding reassignment:
+let score = 10;
+score = 20; // Allowed
+
+const age = 25;
+age = 30;   // TypeError
+
+b> What are the primitive data types available in JavaScript, and how do they fundamentally differ from reference types like arrays and objects?
+
+JavaScript has seven primitive data types:
+String
+Number
+Boolean
+Undefined
+Null
+BigInt
+Symbol
+
+
+Primitive values are immutable values and, when assigned from one variable to another, the primitive value is copied:
+let a = 10;
+let b = a;
+
+b = 50;
+
+console.log(a); // 10
+console.log(b); // 50
+
+Objects—including arrays—behave differently when assigned. The variables can refer to the same object:
+let person1 = {
+    name: "Leonard"
+};
+
+let person2 = person1;
+
+person2.name = "John";
+
+console.log(person1.name); // John
+
+Changing the object through person2 is visible through person1 because both variables refer to the same object.
+
+
+c> Discuss the difference between loose equality (==) and strict equality (===). Why is strict equality generally considered a best practice?
+
+The == operator performs type coercion when the values have different types.
+"5" == 5
+// true
+
+Strict equality === does not perform this coercion:
+"5" === 5
+// false
+
+They contain similar-looking values but have different types:
+
+
+
+d> How do logical operators (&&, ||, ---) evaluate expressions, and what is meant by "short-circuit evaluation"?
+
+The AND && operator evaluates from left to right and stops when it encounters a falsy value:
+true && true;   // true
+true && false;  // false
+
+The OR || operator stops when it encounters a truthy value:
+let username = "";
+
+let displayName = username || "Guest";
+
+console.log(displayName); // Guest
+
+Short-circuit evaluation means JavaScript doesn't evaluate the rest of a logical expression once the result is already determined.
+For example:
+false && console.log("Hello");
+
+console.log() isn't executed because once JavaScript encounters false, the && expression cannot succeed regardless of the second operand.
+Similarly:
+true || console.log("Hello");
+
+The console.log() isn't executed because true is already enough to satisfy the OR expression.
+
+
+e> Describe how a conditional switch statement can be used as an alternative to a long chain of if...else if statements, and explain the role of the default keyword.
+
+A switch statement is useful when one expression needs to be compared against several specific values.
+Instead of:
+let role = "admin";
+
+if (role === "admin") {
+    console.log("Full Access");
+} else if (role === "editor") {
+    console.log("Edit Access");
+} else if (role === "viewer") {
+    console.log("View Access");
+} else {
+    console.log("Unknown Role");
+}
+
+we can write:
+let role = "admin";
+
+switch (role) {
+    case "admin":
+        console.log("Full Access");
+        break;
+
+    case "editor":
+        console.log("Edit Access");
+        break;
+
+    case "viewer":
+        console.log("View Access");
+        break;
+
+    default:
+        console.log("Unknown Role");
+}
+
+JavaScript compares role against each case. When it finds a match, it executes that case.
+The break statement prevents execution from continuing into subsequent cases.
+The default block executes when none of the cases match:
+
+
+
+
+Part 2: Implementation Exercises
+a> Variables and Data Types: Declare three separate variables using let, const, and var to store your full name (string), your age (number), and whether you are enrolled in a class (boolean). Log each variable and its corresponding typeof result to the console.
+
+// Full name - String
+let fullName = "Leonard Stephene";
+
+// Age - Number
+const age = 25;
+
+// Enrollment status - Boolean
+var isEnrolled = true;
+
+
+// Log values and their data types
+console.log(fullName);
+console.log(typeof fullName);
+
+console.log(age);
+console.log(typeof age);
+
+console.log(isEnrolled);
+console.log(typeof isEnrolled);
+
+b> Operators and Type Coercion: Write a code snippet that demonstrates type coercion by attempting to add a numeric string (e.g., "5") to a number (e.g., 10), and contrast this with using the multiplication operator on the same values.
+
+let numericString = "5";
+let number = 10;
+
+// Addition
+console.log(numericString + number); // "510"
+
+// Multiplication
+console.log(numericString * number); // 50
+
+c> Conditional Statements (if...else): Write an if...else if...else statement that evaluates a variable representing a movie ticket buyer's age. The code should output different pricing tiers: children under 5 get in free, youth aged 5 to 17 get a child discount, adults aged 18 to 64 pay full price, and seniors 65 and older get a senior discount.
+
+let age = 25;
+
+if (age < 5) {
+    console.log("Free admission");
+} else if (age <= 17) {
+    console.log("Child discount");
+} else if (age <= 64) {
+    console.log("Full price");
+} else {
+    console.log("Senior discount");
+}
+
+d> Conditional (Ternary) Operator: Create a variable holding a user's account balance. Use the ternary operator to evaluate whether the balance is less than zero; if true, assign the string "Account Overdrawn", otherwise assign "Account Active".
+
+let accountBalance = -500;
+
+let accountStatus = accountBalance < 0
+    ? "Account Overdrawn"
+    : "Account Active";
+
+console.log(accountStatus);
+
+e> Comprehensive Challenge: Write a short script using variables, arithmetic operators, and a switch statement that calculates a final grade based on a numeric score out of 100 divided into ranges for grades A, B, C, D, and F.
+
+let score = 85;
+
+// Arithmetic operation converts the score into a grade range
+let gradeRange = Math.floor(score / 10);
+
+let grade;
+
+switch (gradeRange) {
+    case 10:
+    case 9:
+        grade = "A";
+        break;
+
+    case 8:
+        grade = "B";
+        break;
+
+    case 7:
+        grade = "C";
+        break;
+
+    case 6:
+        grade = "D";
+        break;
+
+    default:
+        grade = "F";
+}
+
+console.log("Score:", score);
+console.log("Final Grade:", grade);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+JavaScript Core Mastery: Control Flow, Functions, and Scope
+This question set is designed to evaluate a student's grasp of JavaScript fundamentals, focusing on the underlying mechanics and practical implementation.
+Part 1: Control Flow (If-Else & Logical Operators)
+Theoretical Mastery:
+
+
+
+1> In JavaScript, truthy and falsy describe how values behave when JavaScript expects a Boolean (true or false), such as inside an if statement.
+Falsy values
+A falsy value is treated as false in a Boolean context. Common falsy values include:
+false
+0
+-0
+""          // empty string
+null
+undefined
+NaN
+0n          // BigInt zero
+
+Truthy values
+A truthy value is any value that JavaScript treats as true in a Boolean context.
+Examples include:
+
+"Hello"
+"false"
+1
+-10
+100
+[]
+{}
+
+2> Short-circuit logic in JavaScript
+Short-circuit evaluation means JavaScript stops evaluating an expression as soon as it already knows the result.
+&& — AND operator
+With &&, JavaScript evaluates from left to right and stops when it finds a falsy value.
+
+This behavior can be used to provide default values.
+let username = "";
+
+let displayName = username || "Guest";
+
+console.log(displayName);
+
+If we had:
+let username = "Leonard";
+
+let displayName = username || "Guest";
+
+console.log(displayName);
+
+Output:
+Leonard
+
+3>  In JavaScript, it is generally recommended to use strict equality === instead of loose equality == because === compares both the value and the data type, while == may perform type coercion before comparing.
+== — Loose equality
+The == operator allows JavaScript to automatically convert one value's type to another before comparison.
+For example:
+let age = "18";
+
+if (age == 18) {
+    console.log("You are 18");
+}
+
+This condition is true, even though:
+"18"  // string
+18    // number
+
+This automatic conversion is called type coercion.
+=== — Strict equality
+The === operator does not perform type coercion. The values must have the same value and the same data type.
+"18" === 18   // false
+
+It is false because:
+typeof "18"  // "string"
+typeof 18    // "number"
+
+4> code output results:
+
+Result A
+
+Here's why.
+First, we have:
+const x = "5"; // string
+const y = 5;   // number
+
+The first condition is:
+if (x == y && typeof x === "string")
+
+Break it into two parts.
+Part 1:
+x == y
+
+Which means:
+"5" == 5
+
+This is true because == performs type coercion. JavaScript converts "5" into the number 5 before comparing:
+"5" == 5 // true
+
+Part 2:
+typeof x === "string"
+
+Since:
+typeof "5" // "string"
+
+this is also true.
+
+5> in the previous question: Because the first if condition is true, Result A executes, and JavaScript skips the else if and else blocks.
+Answer: Result A executes because == allows type conversion, making "5" equal to 5, and x is indeed a string.
+
+6. 
+Starting with nested if...else structure:
+let age = 20;
+let hasTicket = true;
+
+if (age >= 18) {
+    if (hasTicket) {
+        console.log("Entry Allowed");
+    } else {
+        console.log("Ticket Required");
+    }
+} else {
+    console.log("Entry Denied");
+}
+
+We can rewrite the same logic using a ternary operator:
+let age = 20;
+let hasTicket = true;
+
+let result = age >= 18
+    ? (hasTicket ? "Entry Allowed" : "Ticket Required")
+    : "Entry Denied";
+
+console.log(result);
+
+Here, the first ternary checks:
+age >= 18
+
+If it's true, the second ternary checks hasTicket. If it's false, "Entry Denied" is returned.
+When should you use each?
+A ternary operator is preferable when the conditions are relatively simple and you want to choose between values:
+let status = age >= 18 ? "Adult" : "Minor";
+
+A switch statement is preferable when you're comparing one value against several specific possibilities, for example:
+let role = "admin";
+
+switch (role) {
+    case "admin":
+        console.log("Full Access");
+        break;
+
+    case "editor":
+        console.log("Edit Access");
+        break;
+
+    case "viewer":
+        console.log("View Only");
+        break;
+
+    default:
+        console.log("No Access");
+}
+
+So, as a general guideline: use a ternary for short, simple choices between values, and use switch when one expression has several possible cases. Avoid deeply nested ternaries because they quickly become difficult to read.
+
+Part 2: Iteration (For & While Loops)
+Theoretical Mastery: 
+
+6> The Loop Lifecycle: Identify the three expressions inside a for loop header: for(initialization; condition; final-expression). At exactly what point in the iteration cycle does the final-expression execute?
+
+A JavaScript for loop has three expressions in its header:
+for (initialization; condition; final-expression) {
+    // code to execute
+}
+
+For example:
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+The three parts are:
+Expression	Example	Purpose
+Initialization	let i = 0	Runs once before the loop starts
+Condition	i < 5	Checked before each iteration
+Final-expression	i++	Runs after the loop body finishes each iteration
+
+
+When exactly does final-expression execute?
+The final-expression executes after the code inside the loop body has completed, but before the condition is checked again.
+The lifecycle is:
+1. Initialization
+       ↓
+2. Check condition
+       ↓
+3. Execute loop body
+       ↓
+4. Execute final-expression
+       ↓
+5. Check condition again
+       ↓
+6. Execute loop body again
+       ↓
+7. Execute final-expression
+       ↓
+   ...repeat
+
+Consider:
+for (let i = 0; i < 3; i++) {
+    console.log(i);
+}
+
+What happens is:
+let i = 0       ← initialization
+
+i < 3 → true    ← condition
+console.log(0)  ← loop body
+i++             ← final-expression
+
+i < 3 → true
+console.log(1)
+i++
+
+i < 3 → true
+console.log(2)
+i++
+
+i < 3 → false   ← loop stops
+
+The output is:
+0
+1
+2
+
+So the key answer is:
+The final-expression executes after each completed iteration of the loop body and immediately before JavaScript checks the condition for the next iteration.
+
+7> Termination Hazards: What is a "loop invariant," and how does a programmer ensure a while loop eventually reaches its termination condition?
+
+A loop invariant is a condition or fact that remains true before and after every iteration of a loop. It helps a programmer reason about whether the loop is behaving correctly.
+For example:
+let count = 0;
+
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+Here, count starts at 0, and each iteration increases it by 1. The important termination idea is that count is always moving toward the stopping condition:
+count < 5
+
+The lifecycle looks like this:
+count = 0 → condition true → count becomes 1
+count = 1 → condition true → count becomes 2
+count = 2 → condition true → count becomes 3
+count = 3 → condition true → count becomes 4
+count = 4 → condition true → count becomes 5
+count = 5 → condition false → STOP
+
+To ensure a while loop eventually terminates, the programmer should make sure that something inside the loop changes on every relevant iteration and moves the program toward making the loop condition false.
+For example, this is dangerous:
+let count = 0;
+
+while (count < 5) {
+    console.log(count);
+}
+
+count never changes, so count < 5 remains true forever. This creates an infinite loop.
+Adding:
+count++;
+
+fixes the problem:
+let count = 0;
+
+while (count < 5) {
+    console.log(count);
+    count++;
+}
+
+So, in simple terms: a loop invariant is something that remains true throughout the loop, while termination requires some changing value or state to make steady progress toward the stopping condition.
+
+8> Break vs. Continue: Define the difference between the break and continue keywords. How do they affect the "counter" or "iterator" in a loop?
+
+In JavaScript, both break and continue change the normal flow of a loop, but they do very different things.
+break — stops the entire loop
+The break keyword immediately exits the loop completely.
+for (let i = 1; i <= 5; i++) {
+    if (i === 3) {
+        break;
+    }
+
+    console.log(i);
+}
+
+Output:
+1
+2
+
+When i becomes 3, break executes. The loop ends immediately, so the counter never proceeds through 4 and 5.
+continue — skips only the current iteration
+The continue keyword skips the remaining code in the current iteration and moves on to the next iteration.
+for (let i = 1; i <= 5; i++) {
+    if (i === 3) {
+        continue;
+    }
+
+    console.log(i);
+}
+
+Output:
+1
+2
+4
+5
+
+When i is 3, continue skips:
+
+9> Array Traversal: Write a for loop that iterates through an array of numbers but skips every even number and stops entirely if it encounters a negative number.
+
+You can use both continue and break to accomplish this:
+const numbers = [1, 4, 7, 8, 11, -3, 15, 20];
+
+for (let i = 0; i < numbers.length; i++) {
+
+    // Stop the loop if the number is negative
+    if (numbers[i] < 0) {
+        break;
+    }
+
+    // Skip even numbers
+    if (numbers[i] % 2 === 0) {
+        continue;
+    }
+
+    console.log(numbers[i]);
+}
+
+The output is:
+1
+7
+11
+
+Here's what happens: 1 is odd, so it prints. 4 is even, so continue skips it. 7 prints, 8 is skipped, and 11 prints. When the loop reaches -3, break terminates the entire loop, so 15 and 20 are never reached.
+The key conditions are:
+numbers[i] % 2 === 0
+
+This checks whether a number is even. % is the remainder/modulus operator.
+And:
+numbers[i] < 0
+
+checks whether the number is negative.
+So remember: continue = skip this iteration; break = stop the entire loop.
+
+10> Code Tracing (Nested Loops):
+
+let count = 0;
+for (let i = 0; i < 3; i++) {
+    for (let j = 3; j > i; j--) {
+        count++;
+    }
+}
+
+Let's trace the nested loops to determine the final value of count.
+let count = 0;
+
+for (let i = 0; i < 3; i++) {
+    for (let j = 3; j > i; j--) {
+        count++;
+    }
+}
+
+The outer loop runs with:
+i = 0
+i = 1
+i = 2
+
+Now look at how many times the inner loop runs for each value of i.
+i	Values of j that satisfy j > i	count++ executions
+0	3, 2, 1	3
+1	3, 2	2
+2	3	1
+
+
+Therefore:
+3 + 2 + 1 = 6
+
+So after both loops finish:
+count === 6
+
+11> Calculate the final value of count. Show the state of i and j for each increment.
+
+Given this code:
+let count = 0;
+
+for (let i = 0; i < 3; i++) {
+    for (let j = 3; j > i; j--) {
+        count++;
+    }
+}
+
+The final value of count is 6.
+Here is the state of i and j every time count++ executes:
+Increment	i	j	count after count++
+1	0	3	1
+2	0	2	2
+3	0	1	3
+4	1	3	4
+5	1	2	5
+6	2	3	6
+
+
+Trace
+For i = 0, the inner loop checks:
+j = 3 → 3 > 0 → true  → count = 1
+j = 2 → 2 > 0 → true  → count = 2
+j = 1 → 1 > 0 → true  → count = 3
+j = 0 → 0 > 0 → false → inner loop stops
+
+For i = 1:
+j = 3 → 3 > 1 → true  → count = 4
+j = 2 → 2 > 1 → true  → count = 5
+j = 1 → 1 > 1 → false → inner loop stops
+
+For i = 2:
+j = 3 → 3 > 2 → true  → count = 6
+j = 2 → 2 > 2 → false → inner loop stops
+
+Then i becomes 3:
+i < 3
+
+is false, so the outer loop terminates.
+Therefore:
+Final count = 6
+
+The important thing to notice is that j is reset to 3 every time the outer loop starts a new iteration, because let j = 3 is the initialization of the inner for loop.
+
+12> While vs. Do-While: Provide a code example where a do...while loop would behave differently than a standard while loop with the same condition.
+
+The key difference is:
+A while loop checks the condition before executing, while a do...while loop executes once before checking the condition.
+
+For example, suppose the condition is already false:
+Using while
+let number = 10;
+
+while (number < 5) {
+    console.log("Number:", number);
+    number++;
+}
+
+There is no output because JavaScript checks:
+number < 5
+
+which means:
+10 < 5 → false
+
+Therefore, the loop body never executes.
+Using do...while
+Now use the same condition:
+let number = 10;
+
+do {
+    console.log("Number:", number);
+    number++;
+} while (number < 5);
+
+Output:
+Number: 10
+
+Even though 10 < 5 is false, the code executes once because the condition isn't checked until after the loop body runs.
+So the execution order is:
+while:
+
+Check condition
+      ↓
+If true
+      ↓
+Run code
+
+Compared with:
+do...while:
+
+Run code
+     ↓
+Check condition
+     ↓
+If true → run code again
+
+Therefore, do...while guarantees at least one execution, whereas a regular while loop can execute zero times if its condition is false from the beginning.
+
+Part 3: Functions (Anatomy & Execution)
+Theoretical Mastery:
+
+12> Declaration vs. Expression: Explain the difference between a Function Declaration and a Function Expression. Specifically, how does "Hoisting" affect where these can be called in a script?
+
+
+A Function Declaration defines a function directly using the function keyword, while a Function Expression creates a function and stores it in a variable.
+
+1. Function Declaration
+A function declaration looks like this:
+function greet() {
+    console.log("Hello!");
+}
+
+JavaScript hoists the entire function declaration, meaning you can call the function before its definition appears in the code.
+
+For example:
+greet(); // Works
+
+function greet() {
+    console.log("Hello!");
+}
+
+Output:
+Hello!
+
+2. Function Expression
+A function expression creates a function and assigns it to a variable:
+const greet = function () {
+    console.log("Hello!");
+};
+
+Unlike a function declaration, you generally cannot call it before the assignment has executed:
+greet(); // Error
+
+const greet = function () {
+    console.log("Hello!");
+};
+
+That's because greet is declared with const. The binding exists before the declaration line due to hoisting, but it is in the Temporal Dead Zone (TDZ) and cannot be accessed until JavaScript reaches:
+
+13> Parameters and Rest/Spread: Define the arguments object vs. the "Rest Parameter" (...args) syntax. Which is preferred in modern JavaScript and why?
+ 
+Both the arguments object and the rest parameter (...args) allow a function to work with a variable number of arguments. However, modern JavaScript generally prefers rest parameters.
+1. The arguments object
+Traditional JavaScript functions automatically have access to an arguments object containing the values passed to the function.
+function showNumbers() {
+    console.log(arguments);
+}
+
+showNumbers(10, 20, 30);
+
+The arguments object contains 10, 20, and 30.
+You can access individual arguments using indexes:
+function showNumbers() {
+    console.log(arguments[0]);
+    console.log(arguments[1]);
+    console.log(arguments[2]);
+}
+
+showNumbers(10, 20, 30);
+
+Output:
+10
+20
+30
+
+However, arguments is array-like, not a real JavaScript array. For example, it has indexes and .length, but it doesn't directly provide all normal array methods.
+2. Rest parameter — ...args
+Rest parameter syntax collects the remaining arguments into a real array:
+function showNumbers(...args) {
+    console.log(args);
+}
+
+showNumbers(10, 20, 30);
+
+Here:
+...args
+
+collects the arguments into:
+[10, 20, 30]
+
+Because args is a real array, you can easily use methods such as .map(), .filter(), and .reduce().
+For example:
+function addNumbers(...numbers) {
+    return numbers.reduce((total, number) => total + number, 0);
+}
+
+console.log(addNumbers(10, 20, 30));
+
+Output:
+60
+
+Rest with regular parameters
+You can also combine normal parameters with a rest parameter:
+function introduce(name, ...hobbies) {
+    console.log(name);
+    console.log(hobbies);
+}
+
+introduce("Leonard", "Coding", "Gaming", "Reading");
+
+Here:
+name    → "Leonard"
+hobbies → ["Coding", "Gaming", "Reading"]
+
+The rest parameter must be the last parameter:
+function example(name, ...args) {
+    // valid
+}
+
+Which is preferred?
+In modern JavaScript, rest parameters (...args) are generally preferred. They produce a real array, make it explicit that the function accepts a variable number of arguments, work naturally with array methods, and also work with arrow functions.
+
+14> The Return Statement: What happens to a function's execution if a return keyword is used without a value? What value does the function call evaluate to in that instance?
+
+When JavaScript encounters a return statement, the function immediately stops executing and control returns to the place where the function was called.
+If return is used without a value, the function returns undefined.
+For example:
+function greet() {
+    console.log("Hello");
+
+    return;
+
+    console.log("Goodbye");
+}
+
+let result = greet();
+
+console.log(result);
+
+Output:
+Hello
+undefined
+
+Notice that:
+console.log("Goodbye");
+
+never executes because the function stops as soon as JavaScript reaches:
+return;
+
+Since no value was provided after return, the function call:
+greet()
+
+evaluates to:
+undefined
+
+Technical Application
+15> Arrow Function Anatomy: Convert the following standard function into a concise arrow function. Identify which parts of the anatomy (like the function keyword or curly braces) can be omitted:
+
+function multiply(a, b) {
+    return a * b;
+}
+
+can be written as:
+const multiply = (a, b) => a * b;
+
+console.log(multiply(5, 4));
+
+Output:
+20
+
+The curly braces and return can be omitted because the function contains only one expression:
+a * b
+
+JavaScript automatically returns the result. This is called an implicit return.
+
+
+16> Higher-Order Concepts: If a function A is passed as an argument to function B, what is function A commonly called? Describe the flow of data between the two.
+
+When function A is passed as an argument to function B, function A is commonly called a callback function.
+Function B, because it receives or uses another function, is a higher-order function.
+For example:
+function greet(name) {
+    console.log("Hello " + name);
+}
+
+function processUser(callback) {
+    let username = "Leonard";
+    callback(username);
+}
+
+processUser(greet);
+
+Here, greet is the callback, while processUser is the higher-order function.
+
+Part 4: Scopes and Variable Lifetime
+Theoretical Mastery
+
+17> Global vs. Local: Define the "Global Object" (window/global) and explain the risks of polluting the global scope with variables.
+
+Global vs. local variables
+A variable declared outside a function or block is generally in the surrounding/global scope of a classic script:
+let username = "Leonard";
+
+function greet() {
+    console.log(username);
+}
+
+greet();
+
+username can be accessed by greet() because the function can access variables from its outer scope.
+A local variable exists only within its function or block:
+function greet() {
+    let message = "Hello";
+    console.log(message);
+}
+
+greet();
+
+console.log(message); // ReferenceError
+
+What does "polluting the global scope" mean?
+Global scope pollution means creating too many variables, functions, or other names in the global namespace.
+For example:
+var name = "Leonard";
+var age = 25;
+var score = 90;
+var status = "active";
+var total = 500;
+
+In a large application, this can become problematic.
+One major risk is name collisions. Suppose one part of your program has:
+var score = 100;
+
+and another script also uses:
+var score = 50;
+
+Depending on how the scripts are loaded and scoped, one may overwrite or interfere with the other.
+Global variables can also be changed from many different places, making bugs harder to track:
+
+18> Block Scope vs. Function Scope: Contrast the scoping behavior of var with let and const. How did the introduction of ES6 change how we handle variables inside if blocks and for loops?
+
+The main difference is that var is function-scoped, while let and const are block-scoped.
+A block is code surrounded by curly braces {} such as an if statement or for loop.
+var — Function Scope
+var does not create a new scope just because it appears inside an if block.
+if (true) {
+    var message = "Hello";
+}
+
+console.log(message);
+
+Output:
+Hello
+
+Even though message was declared inside {}, it is still accessible outside the if block.
+However, var is scoped to functions:
+function greet() {
+    var message = "Hello";
+}
+
+console.log(message); // ReferenceError
+
+Here, message cannot escape the function.
+let and const — Block Scope
+let and const respect {} blocks.
+if (true) {
+    let age = 25;
+    const name = "Leonard";
+
+    console.log(age);  // Works
+    console.log(name); // Works
+}
+
+console.log(age);  // ReferenceError
+console.log(name); // ReferenceError
+
+age and name only exist within that block.
+
+What changed with ES6?
+Before ES6 (ES2015), JavaScript primarily relied on var, so developers had to be careful because variables declared inside if, for, and other blocks could remain accessible outside those blocks.
+
+19> Shadowing: Describe "Variable Shadowing." If a local variable and global variable share a name, how does the JavaScript engine decide which one to access?
+
+Variable shadowing happens when a variable declared in an inner/local scope has the same name as a variable in an outer/global scope.
+When this happens, the inner variable temporarily shadows (hides) the outer variable within that scope.
+For example:
+let name = "Leonard"; // outer variable
+
+function greet() {
+    let name = "John"; // local variable shadows outer variable
+
+    console.log(name);
+}
+
+greet();
+
+console.log(name);
+
+Output:
+John
+Leonard
+
+Inside greet(), JavaScript finds:
+let name = "John";
+
+so it uses "John".
+Outside the function, that local variable doesn't exist, so:
+console.log(name);
+
+uses the outer variable "Leonard".
+How does JavaScript decide?
+JavaScript uses something called the scope chain or lexical scope.
+When JavaScript encounters:
+console.log(name);
+
+it effectively searches from the closest scope outward:
+
+Technical Application
+Scope Tracing:
+
+let a = 10;
+function outer() {
+    let b = 20;
+    if (true) {
+        let a = 30;
+        var c = 40;
+        console.log(a + b); 
+    }
+    console.log(a);
+    console.log(c);
+}
+outer();
+
+The final output is:
+50
+10
+40
+
+Here's why.
+Inside the if block:
+let a = 30;
+
+This creates a new block-scoped variable named a. It shadows the global:
+let a = 10;
+
+Meanwhile:
+let b = 20;
+
+was declared inside outer(), so the if block can access it through the outer scope.
+Therefore:
+console.log(a + b);
+
+becomes:
+30 + 20 = 50
+
+After the if block finishes, the local a = 30 no longer exists because let is block-scoped.
+So:
+console.log(a);
+
+looks for a inside outer(). There isn't one there, so JavaScript looks outward and finds the global:
+let a = 10;
+
+Therefore it prints:
+10
+
+Finally:
+console.log(c);
+
+prints:
+40
+
+This works because c was declared with:
+var c = 40;
+
+var is function-scoped, not block-scoped. So although c was declared inside the if block, it belongs to the entire outer() function and remains accessible after the if block.
+
+
+21> Predict the three values printed to the console. Explain why the second console.log(a) prints the value it does, referencing block-scoping rules.
+
+The three values printed are:
+50
+10
+40
+
+For the first:
+console.log(a + b);
+
+Inside the if block, the closest a is:
+let a = 30;
+
+and b comes from the surrounding outer() function:
+let b = 20;
+
+Therefore:
+30 + 20 = 50
+
+22> Temporal Dead Zone: Explain what happens if you try to console.log a let variable before it is declared, compared to a var variable.
+
+The key difference is that accessing a let variable before its declaration causes a ReferenceError, while accessing a var variable before its declaration usually gives undefined.
+This difference is related to hoisting and the Temporal Dead Zone (TDZ).
+let before declaration
+Consider:
+console.log(age);
+
+let age = 25;
+
+This causes:
+ReferenceError: Cannot access 'age' before initialization
+
+JavaScript knows that age exists in the scope, but you're not allowed to access it before execution reaches:
+let age = 25;
+
+The period between entering the scope and reaching the declaration is called the Temporal Dead Zone.
+Conceptually:
+Enter scope
+    ↓
+[ Temporal Dead Zone ]
+    ↓
+let age = 25;
+    ↓
+age can now be accessed
+
+var before declaration
+Now consider:
+console.log(age);
+
+var age = 25;
+
+Output:
+undefined
+
+This happens because var is hoisted and initialized with undefined.
+You can roughly imagine JavaScript treating it like:
+var age;
+
+console.log(age); // undefined
+
+age = 25;
+
+So the variable exists before the assignment, but it doesn't yet contain 25.
+
